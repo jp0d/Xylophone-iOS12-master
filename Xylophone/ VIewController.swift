@@ -10,9 +10,9 @@ import UIKit
 import AVFoundation
 import AudioToolbox
 
-class ViewController: UIViewController{
+class ViewController: UIViewController, AVAudioPlayerDelegate{
 
-    var player: AVAudioPlayer?
+    var audioPlayer: AVAudioPlayer!
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -21,19 +21,18 @@ class ViewController: UIViewController{
 
     @IBAction func notePressed(_ sender: UIButton) {
         
-        var note = "note" + String(sender.tag)
+        let note = "note" + String(sender.tag)
         
-        let url = Bundle.main.url(forResource: note, withExtension: "wav")!
+        let soundURL = Bundle.main.url(forResource: note, withExtension: "wav")
         
-        do {
-            player = try AVAudioPlayer(contentsOf: url)
-            guard let player = player else { return }
-            
-            player.prepareToPlay()
-            player.play()
-        } catch let error as Error {
-            print(error.localizedDescription)
+        do{
+            audioPlayer = try AVAudioPlayer(contentsOf: soundURL!)
         }
+        catch{
+            print(error)
+        }
+        
+        audioPlayer.play()
         
     }
     
